@@ -1,26 +1,33 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, FC, useState } from "react"
+import ProductListPage from "./components/ProductListPage"
+import "./App.css"
 
-function App() {
+const App: FC = () => {
+  const [rockets, setRockets] = useState()
+  const [dragons, setDragons] = useState()
+
+  useEffect(() => {
+    fetch("https://api.spacexdata.com/v4/rockets")
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data)
+        setRockets(data)
+      })
+    fetch("https://api.spacexdata.com/v4/dragons")
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data)
+        setDragons(data)
+      })
+  }, [])
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className='App'>
+      {rockets && dragons && (
+        <ProductListPage rockets={rockets!} dragons={dragons!} />
+      )}
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
