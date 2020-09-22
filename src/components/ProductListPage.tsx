@@ -1,17 +1,52 @@
 import React, { FC, useState } from "react"
-import { Button, Col, Row } from "antd"
+import { Button, Col, Drawer, Row } from "antd"
+
 import Card from "./Card"
+import ExpandedInfo from "./ExpandedInfo"
 
-type Rocket = any
-type Dragons = any
+import { Rocket } from "./types/Rocket"
+import { Dragon } from "./types/Dragon"
+import { Device, DeviceBasics } from "./types/Device"
 
+const expandedInfoKeys: Array<keyof DeviceBasics> = [
+  "active",
+  "description",
+  "first_flight",
+  "flickr_images",
+  "name",
+  "type",
+  "wikipedia",
+]
+
+type Devices = Device[]
 type Props = {
   rockets: Rocket[]
-  dragons: Dragons[]
+  dragons: Dragon[]
 }
 
 const ProductListPage: FC<Props> = ({ rockets, dragons }) => {
-  const [devices, setDevices] = useState(rockets)
+  const [devices, setDevices] = useState(rockets as Devices)
+  const [expanded, setExpanded] = useState({} as DeviceBasics)
+  const [open, setOpen] = useState(false)
+
+  const onCardClick = (id: string) => {
+    const device = devices.find((device) => device.id === id)
+    const getBasicDeviceInfo = (
+      acc: DeviceBasics,
+      key: keyof DeviceBasics
+    ): DeviceBasics =>
+      device!.hasOwnProperty(key) ? { ...acc, [key]: device![key] } : acc
+
+    // To avoid passing props in individually to ExpandedInfo
+    const deviceInfo = expandedInfoKeys.reduce<DeviceBasics>(
+      getBasicDeviceInfo,
+      {} as DeviceBasics
+    )
+
+    setExpanded(deviceInfo)
+    setOpen(true)
+  }
+
   return (
     <>
       <Row justify='center'>
@@ -24,18 +59,21 @@ const ProductListPage: FC<Props> = ({ rockets, dragons }) => {
       </Row>
       <Row justify='center'>
         {devices.map((device) => {
-          const { flickr_images, name, description } = device
+          const { flickr_images, name, description, id } = device
           return (
-            <Col>
-              <Card
-                image={flickr_images[0]}
-                name={name}
-                description={description}
-              />
-            </Col>
+            <Card
+              id={id}
+              image={flickr_images[0]}
+              name={name}
+              description={description}
+              onClick={onCardClick}
+            />
           )
         })}
       </Row>
+      <Drawer onClose={() => setOpen(false)} visible={open} placement='bottom'>
+        <ExpandedInfo {...expanded} />
+      </Drawer>
     </>
   )
 }
