@@ -1,22 +1,14 @@
 import React, { FC, useState } from "react"
-import { Button, Col, Drawer, Row } from "antd"
+import { Menu, Layout, Drawer, Row } from "antd"
 
 import Card from "./Card"
 import ExpandedInfo from "./ExpandedInfo"
 
 import { Rocket } from "./types/Rocket"
 import { Dragon } from "./types/Dragon"
-import { Device, DeviceBasics } from "./types/Device"
+import { Device } from "./types/Device"
 
-const expandedInfoKeys: Array<keyof DeviceBasics> = [
-  "active",
-  "description",
-  "first_flight",
-  "flickr_images",
-  "name",
-  "type",
-  "wikipedia",
-]
+const { Header, Footer } = Layout
 
 type Devices = Device[]
 type Props = {
@@ -26,38 +18,50 @@ type Props = {
 
 const ProductListPage: FC<Props> = ({ rockets, dragons }) => {
   const [devices, setDevices] = useState(rockets as Devices)
-  const [expanded, setExpanded] = useState({} as DeviceBasics)
+  const [selected, setSelected] = useState("rockets")
+  const [expanded, setExpanded] = useState({} as Device)
   const [open, setOpen] = useState(false)
 
   const onCardClick = (id: string) => {
     const device = devices.find((device) => device.id === id)
-    const getBasicDeviceInfo = (
-      acc: DeviceBasics,
-      key: keyof DeviceBasics
-    ): DeviceBasics =>
-      device!.hasOwnProperty(key) ? { ...acc, [key]: device![key] } : acc
-
-    // To avoid passing props in individually to ExpandedInfo
-    const deviceInfo = expandedInfoKeys.reduce<DeviceBasics>(
-      getBasicDeviceInfo,
-      {} as DeviceBasics
-    )
-
-    setExpanded(deviceInfo)
+    setExpanded(device!)
     setOpen(true)
+  }
+
+  const handleClick = (e: any) => {
+    setSelected(e.key)
+    switch (e.key) {
+      case "rockets":
+        setDevices(rockets)
+        break
+      case "dragons":
+        setDevices(dragons)
+        break
+    }
   }
 
   return (
     <>
-      <Row justify='center'>
-        <Col>
-          <Button onClick={() => setDevices(rockets)}>Rockets</Button>
-        </Col>
-        <Col>
-          <Button onClick={() => setDevices(dragons)}>Dragons</Button>
-        </Col>
-      </Row>
-      <Row justify='center'>
+      <Header>
+        <h1 style={{ color: "white" }}>SpaceXplore</h1>
+      </Header>
+      <Menu
+        style={{ textAlign: "center" }}
+        onClick={handleClick}
+        selectedKeys={[selected]}
+        mode='horizontal'
+      >
+        <Menu.Item key='rockets'>Rockets</Menu.Item>
+        <Menu.Item key='dragons'>Dragons</Menu.Item>
+      </Menu>
+      <Row
+        style={{ paddingTop: "20px" }}
+        gutter={[
+          { xs: 8, sm: 16, md: 24, lg: 32 },
+          { xs: 8, sm: 16, md: 24, lg: 32 },
+        ]}
+        justify='center'
+      >
         {devices.map((device) => {
           const { flickr_images, name, description, id } = device
           return (
@@ -71,9 +75,17 @@ const ProductListPage: FC<Props> = ({ rockets, dragons }) => {
           )
         })}
       </Row>
-      <Drawer onClose={() => setOpen(false)} visible={open} placement='bottom'>
+      <Drawer
+        height='90vh'
+        onClose={() => setOpen(false)}
+        visible={open}
+        placement='bottom'
+      >
         <ExpandedInfo {...expanded} />
       </Drawer>
+      <Footer>
+        <p>Made by Molly Boyle | 2020</p>
+      </Footer>
     </>
   )
 }
