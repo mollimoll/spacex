@@ -1,7 +1,8 @@
 import React, { FC } from "react"
 import { Carousel, Col, Row } from "antd"
-import { Device } from "./types/Device"
+
 import InfoSection from "./InfoSection"
+import { Device } from "./types/Device"
 
 type Props = Device
 
@@ -13,8 +14,8 @@ const ExpandedInfo: FC<Props> = (props) => {
         <Col xs={0} lg={2} xl={4} />
         <Col sm={14} md={16} lg={12} xl={10}>
           <Carousel autoplay dotPosition={"right"} style={{ width: "100%" }}>
-            {flickr_images.map((imgUrl) => (
-              <div>
+            {flickr_images.map((imgUrl, i) => (
+              <div key={i}>
                 <img
                   style={{ height: 400, width: "100%", objectFit: "contain" }}
                   alt=''

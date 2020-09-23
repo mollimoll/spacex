@@ -7,7 +7,7 @@ export interface DeviceBasics {
   id: string
   active: boolean
   description: string
-  first_flight: Date
+  first_flight: string
   flickr_images: string[]
   name: string
   type: string

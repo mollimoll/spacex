@@ -9,16 +9,10 @@ const App: FC = () => {
   useEffect(() => {
     fetch("https://api.spacexdata.com/v4/rockets")
       .then((response) => response.json())
-      .then((data) => {
-        console.log(data)
-        setRockets(data)
-      })
+      .then((data) => setRockets(data))
     fetch("https://api.spacexdata.com/v4/dragons")
       .then((response) => response.json())
-      .then((data) => {
-        console.log(data)
-        setDragons(data)
-      })
+      .then((data) => setDragons(data))
   }, [])
 
   return (

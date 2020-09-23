@@ -25,10 +25,12 @@ const InfoSection: FC<Props> = ({
     />
     <Statistic title='First Flight' value={first_flight.toString()} />
     <Divider />
-    <p>{description}</p>
+    <p data-testid='info-description'>{description}</p>
     <Divider />
     <p>
-      <a href={wikipedia}>Learn more on Wikipedia</a>
+      <a href={wikipedia} data-testid='info-wiki'>
+        Learn more on Wikipedia
+      </a>
     </p>
   </>
 )
