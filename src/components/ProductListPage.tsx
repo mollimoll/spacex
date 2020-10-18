@@ -1,5 +1,5 @@
 import React, { FC, useState } from "react"
-import { Menu, Layout, Drawer, Row } from "antd"
+import { Menu, Drawer, Row } from "antd"
 
 import DeviceCard from "./DeviceCard"
 import ExpandedInfo from "./ExpandedInfo"
@@ -7,8 +7,6 @@ import ExpandedInfo from "./ExpandedInfo"
 import { Device } from "./types/Device"
 import { Dragon } from "./types/Dragon"
 import { Rocket } from "./types/Rocket"
-
-const { Header, Footer } = Layout
 
 type Devices = Device[]
 type Props = {
@@ -42,9 +40,6 @@ const ProductListPage: FC<Props> = ({ rockets, dragons }) => {
 
   return (
     <>
-      <Header>
-        <h1 style={{ color: "white" }}>SpaceXplore</h1>
-      </Header>
       <Menu
         style={{ textAlign: "center" }}
         onClick={handleClick}
@@ -89,9 +84,6 @@ const ProductListPage: FC<Props> = ({ rockets, dragons }) => {
       >
         <ExpandedInfo {...expanded} />
       </Drawer>
-      <Footer>
-        <p>Made by Molly Boyle | 2020</p>
-      </Footer>
     </>
   )
 }

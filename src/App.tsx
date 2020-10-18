@@ -1,6 +1,10 @@
 import React, { useEffect, FC, useState } from "react"
+import { Layout } from "antd"
 import ProductListPage from "./components/ProductListPage"
 import "./App.css"
+import Header from "./components/Header"
+
+const { Footer } = Layout
 
 const App: FC = () => {
   const [rockets, setRockets] = useState()
@@ -17,9 +21,15 @@ const App: FC = () => {
 
   return (
     <div className='App'>
-      {rockets && dragons && (
+      <Header />
+      {rockets && dragons ? (
         <ProductListPage rockets={rockets!} dragons={dragons!} />
+      ) : (
+        "Loading"
       )}
+      <Footer>
+        <p>Made by Molly Boyle | 2020</p>
+      </Footer>
     </div>
   )
 }
