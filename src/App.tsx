@@ -1,10 +1,8 @@
 import React, { useEffect, FC, useState } from "react"
-import { Layout } from "antd"
 import ProductListPage from "./components/ProductListPage"
 import "./App.css"
 import Header from "./components/Header"
-
-const { Footer } = Layout
+import Footer from "./components/Footer"
 
 const App: FC = () => {
   const [rockets, setRockets] = useState()
@@ -27,9 +25,7 @@ const App: FC = () => {
       ) : (
         "Loading"
       )}
-      <Footer>
-        <p>Made by Molly Boyle | 2020</p>
-      </Footer>
+      <Footer />
     </div>
   )
 }

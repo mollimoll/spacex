@@ -1,6 +1,5 @@
 @import "~antd/dist/antd.css";
 
-.test {
-  background-color: darkslategrey;
-  color: white;
+* {
+  box-sizing: border-box;
 }
